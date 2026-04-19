@@ -1,0 +1,734 @@
+/* ============================================
+   WATCH PARTY — LANDING PAGE
+   GenZ Abstract Minimal
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #07070f;
+  --surface: #0e0e1c;
+  --elevated: #14142a;
+  --border: rgba(255,255,255,0.07);
+  --accent: #7c5cfc;
+  --accent-dim: rgba(124,92,252,0.15);
+  --accent-glow: rgba(124,92,252,0.3);
+  --pink: #f059da;
+  --cyan: #05d9e8;
+  --text: #f0f0ff;
+  --text-2: #8888aa;
+  --text-3: #44445a;
+  --success: #00e5a0;
+  --danger: #ff3c5c;
+  --font-d: 'Syne', sans-serif;
+  --font-b: 'Space Grotesk', sans-serif;
+  --r: 14px;
+  --r-lg: 24px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── ROOT ─────────────────────────────────── */
+.lp-root {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-b);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ─── BACKGROUND ───────────────────────────── */
+.lp-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.lp-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.45;
+}
+
+.lp-blob-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(124,92,252,0.5) 0%, transparent 70%);
+  top: -200px; left: -150px;
+  animation: blobFloat1 12s ease-in-out infinite;
+}
+
+.lp-blob-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(240,89,218,0.35) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+  animation: blobFloat2 15s ease-in-out infinite;
+}
+
+.lp-blob-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(5,217,232,0.2) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: blobFloat3 10s ease-in-out infinite;
+}
+
+.lp-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+
+@keyframes blobFloat1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(40px, 60px) scale(1.08); }
+}
+@keyframes blobFloat2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-50px, -40px) scale(1.1); }
+}
+@keyframes blobFloat3 {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.3; }
+  50% { transform: translate(-50%,-50%) scale(1.3); opacity: 0.15; }
+}
+
+/* ─── HEADER ───────────────────────────────── */
+.lp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 48px;
+  position: relative;
+  z-index: 10;
+}
+
+.lp-logo {
+  font-family: var(--font-d);
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--pink), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.04em;
+}
+
+.lp-header-tabs {
+  display: none;
+  gap: 8px;
+}
+
+.lp-header-tabs button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-family: var(--font-b);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lp-header-tabs button.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* ─── MAIN ─────────────────────────────────── */
+.lp-main {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 60px;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  padding: 40px 48px 60px;
+  position: relative;
+  z-index: 1;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* ─── HERO ─────────────────────────────────── */
+.lp-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lp-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(124,92,252,0.25);
+  color: #a88ffc;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  width: fit-content;
+}
+
+.lp-hero-title {
+  font-family: var(--font-d);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.lp-hero-title span {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 50%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.lp-hero-sub {
+  font-size: 1rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  max-width: 480px;
+  font-weight: 400;
+}
+
+/* ─── FEATURES ─────────────────────────────── */
+.lp-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lp-feature {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.lp-feature:hover {
+  background: var(--accent-dim);
+  border-color: rgba(124,92,252,0.3);
+  color: var(--text);
+}
+
+.lp-feature span { font-size: 0.9rem; }
+
+/* ─── MOCKUP ───────────────────────────────── */
+.lp-mockup {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(124,92,252,0.08);
+}
+
+.lp-mockup-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--elevated);
+}
+
+.lp-mockup-bar span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.lp-mockup-bar span:nth-child(1) { background: #ff5f56; }
+.lp-mockup-bar span:nth-child(2) { background: #ffbd2e; }
+.lp-mockup-bar span:nth-child(3) { background: #27c93f; }
+
+.lp-mockup-screen {
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  height: 140px;
+}
+
+.lp-mockup-player {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+}
+
+.lp-mockup-play {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: white;
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.lp-mockup-chat {
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.lp-mockup-msg {
+  background: var(--elevated);
+  border-radius: 8px 8px 8px 2px;
+  padding: 5px 8px;
+  font-size: 0.62rem;
+  color: var(--text-2);
+  line-height: 1.4;
+  border: 1px solid var(--border);
+}
+
+.lp-mockup-msg b {
+  color: var(--accent);
+  font-weight: 600;
+  display: block;
+  font-size: 0.58rem;
+}
+
+.lp-mockup-msg.right {
+  background: rgba(124,92,252,0.15);
+  border-radius: 8px 8px 2px 8px;
+  border-color: rgba(124,92,252,0.2);
+}
+
+.lp-mockup-msg.right b { color: var(--pink); }
+
+/* ─── AUTH WRAP ────────────────────────────── */
+.lp-auth-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lp-auth-card {
+  background: rgba(14,14,28,0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 32px 28px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(255,255,255,0.04) inset;
+  animation: cardIn 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── AUTH TOGGLE ──────────────────────────── */
+.lp-auth-toggle {
+  display: flex;
+  background: var(--elevated);
+  border-radius: 100px;
+  padding: 4px;
+  gap: 0;
+  margin-bottom: 24px;
+}
+
+.lp-auth-toggle button {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font-b);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: transparent;
+  color: var(--text-3);
+}
+
+.lp-auth-toggle button.active {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+/* ─── AUTH TITLE ───────────────────────────── */
+.lp-auth-title {
+  font-family: var(--font-d);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+/* ─── FORM ─────────────────────────────────── */
+.lp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lp-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.lp-field label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.lp-field input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-family: var(--font-b);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.lp-field input::placeholder { color: var(--text-3); }
+
+.lp-field input:focus {
+  border-color: rgba(124,92,252,0.5);
+  background: rgba(124,92,252,0.06);
+  box-shadow: 0 0 0 3px rgba(124,92,252,0.1);
+}
+
+/* ─── OTP ──────────────────────────────────── */
+.lp-otp-row {
+  display: flex;
+  gap: 8px;
+}
+
+.lp-otp-box {
+  flex: 1;
+  height: 50px;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: var(--font-d);
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  outline: none;
+  transition: all 0.2s;
+  caret-color: var(--accent);
+}
+
+.lp-otp-box:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,92,252,0.15);
+  transform: translateY(-1px);
+}
+
+.lp-otp-box.filled {
+  border-color: rgba(124,92,252,0.4);
+  background: rgba(124,92,252,0.08);
+}
+
+/* ─── RESEND ───────────────────────────────── */
+.lp-resend {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.lp-resend span {
+  color: var(--text-3);
+  font-size: 0.78rem;
+}
+
+.lp-resend button {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-family: var(--font-b);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ─── STEPS ────────────────────────────────── */
+.lp-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+.lp-step-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  background: var(--elevated);
+  color: var(--text-3);
+  border: 1px solid var(--border);
+}
+
+.lp-step-dot.active {
+  background: var(--accent);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.lp-step-dot.done {
+  background: var(--success);
+  color: #000;
+  border-color: transparent;
+}
+
+.lp-step-line {
+  width: 40px; height: 2px;
+  background: var(--border);
+  transition: background 0.3s;
+}
+
+.lp-step-line.done {
+  background: var(--success);
+}
+
+/* ─── PASSWORD STRENGTH ────────────────────── */
+.lp-strength { margin-top: 6px; }
+
+.lp-strength-bar {
+  height: 3px;
+  border-radius: 100px;
+  background: var(--border);
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.lp-strength-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: all 0.4s;
+}
+
+.lp-strength-fill.weak { width: 33%; background: var(--danger); }
+.lp-strength-fill.medium { width: 66%; background: #f59e0b; }
+.lp-strength-fill.strong { width: 100%; background: var(--success); }
+
+.lp-strength-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.lp-strength-label.weak { color: var(--danger); }
+.lp-strength-label.medium { color: #f59e0b; }
+.lp-strength-label.strong { color: var(--success); }
+
+/* ─── PASSWORD MATCH ───────────────────────── */
+.lp-match {
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.lp-match.ok { color: var(--success); }
+.lp-match.no { color: var(--danger); }
+
+/* ─── ERROR ────────────────────────────────── */
+.lp-error {
+  background: rgba(255,60,92,0.08);
+  border: 1px solid rgba(255,60,92,0.2);
+  color: #ff8fa3;
+  padding: 8px 12px;
+  border-radius: var(--r);
+  font-size: 0.82rem;
+  text-align: center;
+  margin-bottom: 12px;
+  animation: errIn 0.3s ease;
+}
+
+@keyframes errIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── PRIMARY BUTTON ───────────────────────── */
+.lp-btn-primary {
+  width: 100%;
+  padding: 11px;
+  border: none;
+  border-radius: var(--r);
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: var(--font-b);
+  cursor: pointer;
+  background: var(--accent);
+  color: white;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+  overflow: hidden;
+  margin-top: 4px;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.lp-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transition: left 0.5s;
+}
+
+.lp-btn-primary:hover::before { left: 100%; }
+.lp-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.lp-btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ─── SPINNER ──────────────────────────────── */
+.lp-spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── SWITCH ───────────────────────────────── */
+.lp-switch {
+  text-align: center;
+  color: var(--text-3);
+  font-size: 0.8rem;
+  margin-top: 14px;
+}
+
+.lp-switch span {
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.lp-switch span:hover { opacity: 0.8; }
+
+/* ─── SUCCESS ──────────────────────────────── */
+.lp-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 0;
+  animation: cardIn 0.4s ease;
+}
+
+.lp-success-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: #000;
+  font-weight: 800;
+  box-shadow: 0 0 30px rgba(0,229,160,0.3);
+  animation: popIn 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.15); }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.lp-success p {
+  color: var(--text-2);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ─── RESPONSIVE ───────────────────────────── */
+@media (max-width: 1024px) {
+  .lp-main {
+    grid-template-columns: 1fr;
+    padding: 32px 24px 60px;
+    gap: 48px;
+  }
+
+  .lp-hero { align-items: center; text-align: center; }
+  .lp-hero-sub { text-align: center; }
+  .lp-features { justify-content: center; }
+  .lp-mockup { display: none; }
+  .lp-auth-wrap { width: 100%; }
+  .lp-header { padding: 16px 24px; }
+  .lp-header-tabs { display: flex; }
+}
+
+@media (max-width: 480px) {
+  .lp-header { padding: 14px 16px; }
+  .lp-main { padding: 24px 16px 48px; gap: 36px; }
+  .lp-hero-title { font-size: 2.4rem; }
+  .lp-auth-card { padding: 24px 18px; }
+  .lp-otp-box { height: 44px; font-size: 1.1rem; }
+}
