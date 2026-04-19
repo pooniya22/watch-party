@@ -10,7 +10,7 @@ import RoomSidebar from '../components/RoomSidebar';
 import FeedbackModal from '../components/FeedbackModal';
 import './Dashboard.css';
 import ConfirmModal from '../components/ConfirmModel';
-import { Search, CheckCircle2, Copy, Check, Radio, Monitor, Maximize, X, ThumbsUp, Eye, MessageSquare, Clapperboard, TrendingUp, Music, Gamepad2, Film, BookOpen, Trophy } from 'lucide-react';
+import { Search, CheckCircle2, Copy, Check,  Monitor, Maximize, X, ThumbsUp, Eye, MessageSquare, Clapperboard, TrendingUp, Music, Gamepad2, Film, BookOpen, Trophy } from 'lucide-react';
 
 interface RoomUser {
   userId:   string;
