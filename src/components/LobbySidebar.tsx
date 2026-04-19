@@ -24,12 +24,12 @@ const LobbySidebar: React.FC<Props> = ({ activeTab, setActiveTab, username }) =>
       {/* User Greeting */}
       <div style={{
         padding: '18px 14px',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        borderBottom: '1px solid rgba(163, 124, 88, 0.15)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
             width: '36px', height: '36px', borderRadius: '50%',
-            background: 'linear-gradient(135deg, #8a5cf6, #f059da)',
+            background: 'linear-gradient(135deg, #a37c58, #c6a282)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '0.95rem', fontWeight: 700, color: 'white',
             flexShrink: 0,
@@ -37,8 +37,8 @@ const LobbySidebar: React.FC<Props> = ({ activeTab, setActiveTab, username }) =>
             {username.charAt(0).toUpperCase()}
           </div>
           <div>
-            <p style={{ margin: 0, color: '#f0f0ff', fontWeight: 700, fontSize: '0.88rem' }}>{username}</p>
-            <p style={{ margin: 0, color: '#44445a', fontSize: '0.7rem', fontWeight: 500 }}>Welcome back</p>
+            <p style={{ margin: 0, color: '#2a2520', fontWeight: 700, fontSize: '0.88rem' }}>{username}</p>
+            <p style={{ margin: 0, color: '#8c8276', fontSize: '0.7rem', fontWeight: 500 }}>Welcome back</p>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ const LobbySidebar: React.FC<Props> = ({ activeTab, setActiveTab, username }) =>
       {/* Category Buttons */}
       <div style={{ padding: '12px 8px', flex: 1 }}>
         <p style={{
-          color: '#44445a', fontSize: '0.68rem', fontWeight: 700,
+          color: '#8c8276', fontSize: '0.68rem', fontWeight: 700,
           textTransform: 'uppercase', letterSpacing: '0.1em',
           padding: '0 6px', marginBottom: '6px', marginTop: 0,
         }}>
@@ -61,10 +61,10 @@ const LobbySidebar: React.FC<Props> = ({ activeTab, setActiveTab, username }) =>
                 onClick={() => setActiveTab(key)}
                 style={{
                   width: '100%', textAlign: 'left', padding: '9px 10px',
-                  background: isActive ? 'rgba(138, 92, 246, 0.12)' : 'transparent',
-                  color: isActive ? '#a78bfa' : '#8888aa',
+                  background: isActive ? 'rgba(163, 124, 88, 0.12)' : 'transparent',
+                  color: isActive ? '#a37c58' : '#6b635a',
                   border: 'none',
-                  borderLeft: isActive ? '2px solid #8a5cf6' : '2px solid transparent',
+                  borderLeft: isActive ? '2px solid #a37c58' : '2px solid transparent',
                   borderRadius: '0 8px 8px 0',
                   cursor: 'pointer',
                   fontSize: '0.84rem', fontWeight: isActive ? 600 : 500,
@@ -74,14 +74,14 @@ const LobbySidebar: React.FC<Props> = ({ activeTab, setActiveTab, username }) =>
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-                    e.currentTarget.style.color = '#c4c4d4';
+                    e.currentTarget.style.background = 'rgba(163, 124, 88, 0.05)';
+                    e.currentTarget.style.color = '#4a433a';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive) {
                     e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#8888aa';
+                    e.currentTarget.style.color = '#6b635a';
                   }
                 }}
               >
@@ -94,15 +94,15 @@ const LobbySidebar: React.FC<Props> = ({ activeTab, setActiveTab, username }) =>
       </div>
 
       {/* Footer Tip */}
-      <div style={{ padding: '12px 10px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      <div style={{ padding: '12px 10px', borderTop: '1px solid rgba(163, 124, 88, 0.15)' }}>
         <div style={{
-          background: 'rgba(138, 92, 246, 0.06)',
-          border: '1px solid rgba(138, 92, 246, 0.15)',
+          background: 'rgba(163, 124, 88, 0.05)',
+          border: '1px solid rgba(163, 124, 88, 0.15)',
           padding: '10px 12px', borderRadius: '10px',
           display: 'flex', gap: '8px', alignItems: 'flex-start',
         }}>
-          <Lightbulb size={13} color="#8a5cf6" style={{ flexShrink: 0, marginTop: '2px' }} />
-          <p style={{ color: '#44445a', fontSize: '0.7rem', margin: 0, lineHeight: '1.5' }}>
+          <Lightbulb size={13} color="#a37c58" style={{ flexShrink: 0, marginTop: '2px' }} />
+          <p style={{ color: '#6b635a', fontSize: '0.7rem', margin: 0, lineHeight: '1.5' }}>
             Create a room and share the code with friends to watch together in sync.
           </p>
         </div>

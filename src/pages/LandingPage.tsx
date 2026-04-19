@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import './LandingPage.css';
+import { Play, MessageCircle, Crown, Zap, ArrowRight, Clapperboard } from 'lucide-react';
 
 const API = `${import.meta.env.VITE_API_URL}/api`;
 
@@ -285,7 +286,7 @@ const SignupForm: React.FC<{ onSwitch: () => void; onSuccess: () => void }> = ({
                   <div className={`lp-strength-fill ${strength}`} />
                 </div>
                 <span className={`lp-strength-label ${strength}`}>
-                  {strength === 'weak' ? 'Weak' : strength === 'medium' ? 'Medium' : 'Strong 💪'}
+                  {strength === 'weak' ? 'Weak' : strength === 'medium' ? 'Medium' : 'Strong'}
                 </span>
               </div>
             )}
@@ -302,7 +303,7 @@ const SignupForm: React.FC<{ onSwitch: () => void; onSuccess: () => void }> = ({
           </div>
           <button type="submit" className="lp-btn-primary"
             disabled={loading || password !== confirmPassword}>
-            {loading ? <span className="lp-spinner" /> : 'Create Account ✨'}
+            {loading ? <span className="lp-spinner" /> : <>Create Account <ArrowRight size={18} /></>}
           </button>
         </form>
       )}
@@ -341,7 +342,7 @@ const LandingPage: React.FC<Props> = ({ onSuccess }) => {
       <main className="lp-main">
         {/* LEFT: Hero */}
         <div className="lp-hero">
-          <div className="lp-hero-tag">🎬 Watch together, anywhere</div>
+          <div className="lp-hero-tag"><Clapperboard size={14} /> Watch together, anywhere</div>
           <h1 className="lp-hero-title">
             Your squad.<br />
             One screen.<br />
@@ -354,34 +355,22 @@ const LandingPage: React.FC<Props> = ({ onSuccess }) => {
           {/* Feature pills */}
           <div className="lp-features">
             <div className="lp-feature">
-              <span>▶</span> YouTube sync
+              <span><Play size={14} /></span> YouTube sync
             </div>
             <div className="lp-feature">
-              <span>💬</span> Live chat
+              <span><MessageCircle size={14} /></span> Live chat
             </div>
             <div className="lp-feature">
-              <span>👑</span> Host controls
+              <span><Crown size={14} /></span> Host controls
             </div>
             <div className="lp-feature">
-              <span>⚡</span> Real-time
+              <span><Zap size={14} /></span> Real-time
             </div>
           </div>
 
-          {/* Abstract decorative card */}
-          <div className="lp-mockup">
-            <div className="lp-mockup-bar">
-              <span /><span /><span />
-            </div>
-            <div className="lp-mockup-screen">
-              <div className="lp-mockup-player">
-                <div className="lp-mockup-play">▶</div>
-              </div>
-              <div className="lp-mockup-chat">
-                <div className="lp-mockup-msg"><b>Vijay</b> omg this part 🔥</div>
-                <div className="lp-mockup-msg right"><b>You</b> yesss bro 😭</div>
-                <div className="lp-mockup-msg"><b>Priya</b> rewind rewind!!!</div>
-              </div>
-            </div>
+          {/* Hero Image */}
+          <div className="lp-hero-image-wrap">
+            <img src="/hero-art.png" alt="Abstract Beige Minimal Art" className="lp-hero-image" />
           </div>
         </div>
 
@@ -399,7 +388,7 @@ const LandingPage: React.FC<Props> = ({ onSuccess }) => {
             </div>
 
             <div className="lp-auth-title">
-              {authMode === 'login' ? 'Welcome back 👋' : 'Join the party 🎉'}
+              {authMode === 'login' ? 'Welcome back' : 'Join the party'}
             </div>
 
             {authMode === 'login' ? (

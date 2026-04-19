@@ -10,6 +10,7 @@ import RoomSidebar from '../components/RoomSidebar';
 import FeedbackModal from '../components/FeedbackModal';
 import './Dashboard.css';
 import ConfirmModal from '../components/ConfirmModel';
+import { Search, CheckCircle2, Copy, Check, Radio, Monitor, Maximize, X, ThumbsUp, Eye, MessageSquare, Clapperboard, TrendingUp, Music, Gamepad2, Film, BookOpen, Trophy } from 'lucide-react';
 
 interface RoomUser {
   userId:   string;
@@ -45,14 +46,14 @@ interface CommentItem {
   publishedAt: string;
 }
 
-const CATEGORY_MAP: Record<string, { label: string; id?: string }> = {
+const CATEGORY_MAP: Record<string, { label: string; id?: string; icon?: React.ElementType }> = {
   home:      { label: 'All' },
-  trending:  { label: '🔥 Trending' },
-  music:     { label: '🎵 Music',     id: '10' },
-  gaming:    { label: '🎮 Gaming',    id: '20' },
-  movies:    { label: '🎬 Movies',    id: '1'  },
-  education: { label: '📚 Education', id: '27' },
-  sports:    { label: '⚽ Sports',    id: '17' },
+  trending:  { label: 'Trending',  icon: TrendingUp },
+  music:     { label: 'Music',     id: '10', icon: Music },
+  gaming:    { label: 'Gaming',    id: '20', icon: Gamepad2 },
+  movies:    { label: 'Movies',    id: '1',  icon: Film },
+  education: { label: 'Education', id: '27', icon: BookOpen },
+  sports:    { label: 'Sports',    id: '17', icon: Trophy },
 };
 
 const Dashboard: React.FC = () => {
@@ -96,6 +97,8 @@ const [videoID, setVideoID] = useState<string | null>(null);
   // Always default to VIEWER — room_data event sets the real role
   const [myRole,          setMyRole]          = useState<string>('VIEWER');
   const [theaterMode,     setTheaterMode]     = useState(false);
+  const [sidebarWidth,    setSidebarWidth]    = useState(320); // Default to slightly wider for chat
+  const [isResizing,      setIsResizing]      = useState(false);
   const [showFeedback,    setShowFeedback]    = useState(false);
   const [leavingRoomId,   setLeavingRoomId]   = useState<string | null>(null);
   const [confirmedUserId, setConfirmedUserId] = useState<string | null>(null);
@@ -375,7 +378,7 @@ s.on('receive_sync_time', (data: { currentTime: number; isPlaying: boolean; vide
 
     try {
       const category = CATEGORY_MAP[activeCategory];
-      let url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&maxResults=20&regionCode=IN&key=${API_KEY}`;
+      let url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&maxResults=8&regionCode=IN&key=${API_KEY}`;
       if (category?.id) url += `&videoCategoryId=${category.id}`;
       if (pageToken)    url += `&pageToken=${pageToken}`;
 
@@ -422,7 +425,7 @@ s.on('receive_sync_time', (data: { currentTime: number; isPlaying: boolean; vide
     else           setIsSearching(true);
 
     try {
-      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`;
+      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=8&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`;
       if (pageToken) url += `&pageToken=${pageToken}`;
 
       const res  = await fetch(url);
@@ -718,6 +721,32 @@ const confirmEndParty = () => {
     }
   };
 
+  // --- Resize Setup ---
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isResizing) return;
+      // The wider the dragged mouse X is from the right edge of screen, the larger the sidebar.
+      const newWidth = window.innerWidth - e.clientX;
+      if (newWidth > 250 && newWidth < 800) {
+        setSidebarWidth(newWidth);
+      }
+    };
+    const handleMouseUp = () => setIsResizing(false);
+    if (isResizing) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none'; // Prevent text selection while dragging
+    } else {
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing]);
+
   // ─── JSX ────────────────────────────────────────────────
   return (
     <div className="dashboard-wrapper-full">
@@ -741,19 +770,24 @@ const confirmEndParty = () => {
             onChange={(e) => setNavSearchQuery(e.target.value)}
             className="nav-search-input"
           />
-          <button type="submit" className="nav-search-btn" disabled={isSearching}>🔍</button>
+          <button type="submit" className="nav-search-btn" disabled={isSearching} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Search size={16} strokeWidth={3} />
+          </button>
         </form>
 
         <div className="nav-actions">
           {urlRoomId ? (
             <>
-              <div className="room-tag">🔴 LIVE — {participants.length} watching</div>
+              <div className="room-tag">
+                <div className="pulse-dot" />
+                LIVE — {participants.length} watching
+              </div>
               <button
                 className={`btn-theater ${theaterMode ? 'active' : ''}`}
                 onClick={() => setTheaterMode(!theaterMode)}
                 title={theaterMode ? 'Exit Theater' : 'Theater Mode'}
               >
-                {theaterMode ? '⬜' : '🖥️'}
+                {theaterMode ? <Maximize size={18} /> : <Monitor size={18} />}
               </button>
               {myRole === 'HOST' ? (
                 <button className="btn-logout" onClick={handleEndParty}>End Party</button>
@@ -795,7 +829,7 @@ const confirmEndParty = () => {
             <>
               {videoID ? (
                 <>
-                  <div className="player-container" style={{ position: 'relative' }}>
+                  <div className="player-container" style={{ position: 'relative', marginBottom: '0' }}>
                     <YouTube
                       videoId={videoID}
                       opts={playerOpts}
@@ -808,6 +842,18 @@ const confirmEndParty = () => {
                         position: 'absolute', top: 0, left: 0,
                         right: 0, bottom: 0, zIndex: 10
                       }} />
+                    )}
+                    {canControl && (
+                      <button
+                        className="close-player-overlay"
+                        onClick={() => {
+                          setVideoID(null); setVideoDetail(null);
+                          setComments([]); setRelatedVideos([]);
+                        }}
+                        title="Close Player"
+                      >
+                        <X size={28} />
+                      </button>
                     )}
                   </div>
 
@@ -829,21 +875,21 @@ const confirmEndParty = () => {
                           </div>
                         </div>
                         <div className="video-detail-stats">
-                          <span className="stat-pill">👍 {formatCount(videoDetail.likeCount)}</span>
-                          <span className="stat-pill">👁️ {formatCount(videoDetail.viewCount)} views</span>
+                          <span className="stat-pill"><ThumbsUp size={16} className="icon-gap" /> {formatCount(videoDetail.likeCount)}</span>
+                          <span className="stat-pill"><Eye size={16} className="icon-gap" /> {formatCount(videoDetail.viewCount)} views</span>
                           <button
                             className="stat-pill clickable"
                             onClick={() => setShowComments(!showComments)}
                           >
-                            💬 {formatCount(videoDetail.commentCount)} comments
+                            <MessageSquare size={16} className="icon-gap" /> {formatCount(videoDetail.commentCount)} comments
                           </button>
                         </div>
                       </div>
 
                       {showComments && (
                         <div className="comments-section">
-                          <h3 style={{ color: '#e2e8f0', fontSize: '1rem', marginBottom: '12px' }}>
-                            💬 Comments ({videoDetail.commentCount})
+                          <h3 style={{ color: 'var(--text-primary)', fontSize: '1rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <MessageSquare size={18} /> Comments ({videoDetail.commentCount})
                           </h3>
                           {comments.map(c => (
                             <div key={c.id} className="comment-card">
@@ -854,7 +900,7 @@ const confirmEndParty = () => {
                                   <span className="comment-time">{formatTimeAgo(c.publishedAt)}</span>
                                 </div>
                                 <p className="comment-text" dangerouslySetInnerHTML={{ __html: c.text }} />
-                                <span className="comment-likes">👍 {c.likeCount}</span>
+                                <span className="comment-likes"><ThumbsUp size={14} className="icon-gap"/> {c.likeCount}</span>
                               </div>
                             </div>
                           ))}
@@ -863,7 +909,7 @@ const confirmEndParty = () => {
 
                       {relatedVideos.length > 0 && (
                         <div className="related-section">
-                          <h3 style={{ color: '#e2e8f0', fontSize: '1rem', marginBottom: '12px' }}>▶ Up Next</h3>
+                          <h3 style={{ color: 'var(--text-primary)', fontSize: '1rem', marginBottom: '12px' }}>▶ Up Next</h3>
                           <div className="related-grid">
                             {relatedVideos.map((item) => (
                               <div
@@ -884,37 +930,10 @@ const confirmEndParty = () => {
                     </div>
                   )}
 
-                  {(myRole === 'HOST' || myRole === 'MODERATOR') && (
-                    <button
-                      onClick={() => {
-                        setVideoID(null); setVideoDetail(null);
-                        setComments([]); setRelatedVideos([]);
-                      }}
-                      style={{
-                        marginTop: '8px', background: 'transparent', border: '1px solid #334155',
-                        color: '#94a3b8', padding: '6px 14px', borderRadius: '6px',
-                        cursor: 'pointer', fontSize: '0.82rem',
-                      }}
-                    >
-                      ✕ Close Player & Browse
-                    </button>
-                  )}
                 </>
               ) : (
                 <>
-                  {!searchQuery && (
-                    <div className="category-chips">
-                      {Object.entries(CATEGORY_MAP).map(([key, val]) => (
-                        <button
-                          key={key}
-                          className={`category-chip ${activeCategory === key ? 'active' : ''}`}
-                          onClick={() => { setActiveCategory(key); clearSearch(); }}
-                        >
-                          {val.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+
 
                   {searchQuery && (
                     <div style={{
@@ -929,12 +948,31 @@ const confirmEndParty = () => {
                   )}
 
                   <div className="room-browse-hint">
-                    <span>🎬</span>
+                    <span className="aesthetic-icon-wrapper"><Clapperboard size={26} className="aesthetic-icon" /></span>
                     <p>{(myRole === 'HOST' || myRole === 'MODERATOR')
                       ? 'Pick a video below to start watching together!'
                       : 'Waiting for the host to pick a video...'}
                     </p>
                   </div>
+
+                  {!searchQuery && (
+                    <div className="room-category-bar">
+                      {Object.entries(CATEGORY_MAP).map(([key, item]) => {
+                        const Icon = item.icon;
+                        return (
+                          <button
+                            key={key}
+                            className={`category-chip ${activeCategory === key ? 'active' : ''}`}
+                            onClick={() => { setActiveCategory(key); clearSearch(); }}
+                            style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                          >
+                            {Icon && <Icon size={15} style={{ opacity: 0.8 }} />}
+                            {item.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
 
                   {isLoadingVideos ? (
                     <div className="video-grid">
@@ -992,19 +1030,7 @@ const confirmEndParty = () => {
             </>
           ) : (
             <>
-              {!searchQuery && (
-                <div className="category-chips">
-                  {Object.entries(CATEGORY_MAP).map(([key, val]) => (
-                    <button
-                      key={key}
-                      className={`category-chip ${activeCategory === key ? 'active' : ''}`}
-                      onClick={() => { setActiveCategory(key); clearSearch(); }}
-                    >
-                      {val.label}
-                    </button>
-                  ))}
-                </div>
-              )}
+
 
               {searchQuery && (
                 <div style={{
@@ -1020,13 +1046,23 @@ const confirmEndParty = () => {
 
               {videoID && (
                 <div style={{ marginBottom: '24px' }}>
-                  <div className="player-container" style={{ marginBottom: '0' }}>
+                  <div className="player-container" style={{ marginBottom: '0', position: 'relative' }}>
                     <YouTube
                       videoId={videoID}
                       opts={playerOpts}
                       onReady={(e) => { playerRef.current = e.target; }}
                       style={{ width: '100%', height: '100%' }}
                     />
+                    <button
+                      className="close-player-overlay"
+                      onClick={() => {
+                        setVideoID(null); setVideoDetail(null);
+                        setComments([]); setRelatedVideos([]);
+                      }}
+                      title="Close Player"
+                    >
+                      <X size={28} />
+                    </button>
                   </div>
                   {videoDetail && (
                     <div className="video-detail-section">
@@ -1046,13 +1082,13 @@ const confirmEndParty = () => {
                           </div>
                         </div>
                         <div className="video-detail-stats">
-                          <span className="stat-pill">👍 {formatCount(videoDetail.likeCount)}</span>
-                          <span className="stat-pill">👁️ {formatCount(videoDetail.viewCount)} views</span>
+                          <span className="stat-pill"><ThumbsUp size={16} className="icon-gap" /> {formatCount(videoDetail.likeCount)}</span>
+                          <span className="stat-pill"><Eye size={16} className="icon-gap" /> {formatCount(videoDetail.viewCount)} views</span>
                           <button
                             className="stat-pill clickable"
                             onClick={() => setShowComments(!showComments)}
                           >
-                            💬 {formatCount(videoDetail.commentCount)}
+                            <MessageSquare size={16} className="icon-gap" /> {formatCount(videoDetail.commentCount)}
                           </button>
                         </div>
                       </div>
@@ -1067,7 +1103,7 @@ const confirmEndParty = () => {
                                   <span className="comment-time">{formatTimeAgo(c.publishedAt)}</span>
                                 </div>
                                 <p className="comment-text" dangerouslySetInnerHTML={{ __html: c.text }} />
-                                <span className="comment-likes">👍 {c.likeCount}</span>
+                                <span className="comment-likes"><ThumbsUp size={14} className="icon-gap" /> {c.likeCount}</span>
                               </div>
                             </div>
                           ))}
@@ -1075,19 +1111,6 @@ const confirmEndParty = () => {
                       )}
                     </div>
                   )}
-                  <button
-                    onClick={() => {
-                      setVideoID(null); setVideoDetail(null);
-                      setComments([]); setRelatedVideos([]);
-                    }}
-                    style={{
-                      marginTop: '8px', background: 'transparent', border: '1px solid #334155',
-                      color: '#94a3b8', padding: '6px 14px', borderRadius: '6px',
-                      cursor: 'pointer', fontSize: '0.82rem',
-                    }}
-                  >
-                    ✕ Close Player
-                  </button>
                 </div>
               )}
 
@@ -1148,25 +1171,41 @@ const confirmEndParty = () => {
 
         {/* ═══════ RIGHT SIDEBAR ═══════ */}
         {urlRoomId && !theaterMode && (
-          <aside className="sidebar-narrow">
-            <RoomSidebar
-              participants={participants}
-              myRole={myRole}
-              myUserId={myUserId}
-              handleAssignRole={handleAssignRole}
-              handleKickUser={handleKickUser}
-              socket={socketRef.current}
-              roomId={urlRoomId || ''}
-              username={username}
-              onSearchVideo={handleSelectVideo}
-              incomingRequests={incomingRequests}
-              myPendingRequest={myPendingRequest}
-              onRequestRoleUpgrade={handleRequestRoleUpgrade}
-              onRespondRoleRequest={handleRespondRoleRequest}
-              handleTransferHost={handleTransferHost}
-              externalSearchQuery={urlRoomId ? navSearchQuery : undefined} 
+          <>
+            <div
+              className="resize-handle"
+              onMouseDown={() => setIsResizing(true)}
+              style={{
+                width: '6px',
+                cursor: 'col-resize',
+                backgroundColor: isResizing ? 'var(--accent)' : 'transparent',
+                borderLeft: '1px solid var(--border)',
+                zIndex: 10,
+                transition: isResizing ? 'none' : 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => { if (!isResizing) e.currentTarget.style.backgroundColor = 'rgba(163, 124, 88, 0.2)'; }}
+              onMouseLeave={(e) => { if (!isResizing) e.currentTarget.style.backgroundColor = 'transparent'; }}
             />
-          </aside>
+            <aside className="sidebar-narrow" style={{ width: `${sidebarWidth}px`, transition: isResizing ? 'none' : 'width 0.3s ease' }}>
+              <RoomSidebar
+                participants={participants}
+                myRole={myRole}
+                myUserId={myUserId}
+                handleAssignRole={handleAssignRole}
+                handleKickUser={handleKickUser}
+                socket={socketRef.current}
+                roomId={urlRoomId || ''}
+                username={username}
+                onSearchVideo={handleSelectVideo}
+                incomingRequests={incomingRequests}
+                myPendingRequest={myPendingRequest}
+                onRequestRoleUpgrade={handleRequestRoleUpgrade}
+                onRespondRoleRequest={handleRespondRoleRequest}
+                handleTransferHost={handleTransferHost}
+                externalSearchQuery={urlRoomId ? navSearchQuery : undefined} 
+              />
+            </aside>
+          </>
         )}
 
         {urlRoomId && theaterMode && (
@@ -1207,7 +1246,9 @@ const confirmEndParty = () => {
       {createdRoomId && (
         <div className="modal-overlay" onClick={handleEnterCreatedRoom}>
           <div className="modal-content room-created-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="room-created-icon">🎉</div>
+            <div className="room-created-icon">
+              <CheckCircle2 size={64} color="#a37c58" strokeWidth={1.5} />
+            </div>
             <h2 className="modal-title" style={{ textAlign: 'center' }}>Room Created!</h2>
             <p style={{ color: '#94a3b8', textAlign: 'center', margin: '0 0 16px', fontSize: '0.88rem' }}>
               Share this code with your friends to join your watch party.
@@ -1215,7 +1256,7 @@ const confirmEndParty = () => {
             <div className="room-code-display">
               <span className="room-code-text">{createdRoomId}</span>
               <button className="room-code-copy" onClick={handleCopyRoomId}>
-                {roomIdCopied ? '✅ Copied!' : '📋 Copy'}
+                {roomIdCopied ? <><Check size={14} /> Copied!</> : <><Copy size={14} /> Copy</>}
               </button>
             </div>
             <button

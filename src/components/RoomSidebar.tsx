@@ -26,14 +26,14 @@ interface Props {
 }
 
 const ROLE_COLOR: Record<string, string> = {
-  HOST: '#f59e0b', MODERATOR: '#a78bfa', PARTICIPANT: '#38bdf8', VIEWER: '#44445a',
+  HOST: '#d97706', MODERATOR: '#7c3aed', PARTICIPANT: '#0284c7', VIEWER: '#6b7280',
 };
 
 const RoleIcon = ({ role, size = 12 }: { role: string; size?: number }) => {
-  if (role === 'HOST')        return <Crown    size={size} color="#f59e0b" />;
-  if (role === 'MODERATOR')   return <Shield   size={size} color="#a78bfa" />;
-  if (role === 'PARTICIPANT') return <Drama    size={size} color="#38bdf8" />;
-  return <Eye size={size} color="#44445a" />;
+  if (role === 'HOST')        return <Crown    size={size} color="#d97706" />;
+  if (role === 'MODERATOR')   return <Shield   size={size} color="#7c3aed" />;
+  if (role === 'PARTICIPANT') return <Drama    size={size} color="#0284c7" />;
+  return <Eye size={size} color="#6b7280" />;
 };
 
 const RoomSidebar: React.FC<Props> = ({
@@ -120,10 +120,10 @@ const RoomSidebar: React.FC<Props> = ({
 
       {/* Tab Bar */}
       <div style={{
-        display: 'flex', gap: '4px',
-        background: 'rgba(255,255,255,0.04)',
-        padding: '4px', borderRadius: '10px',
-        border: '1px solid rgba(255,255,255,0.06)',
+        display: 'flex', gap: '6px',
+        background: 'rgba(163, 124, 88, 0.06)',
+        padding: '6px', borderRadius: '12px',
+        border: '1px solid rgba(163, 124, 88, 0.15)',
       }}>
         {tabs.map(({ key, icon: Icon, label, badge }) => {
           const isActive = tab === key;
@@ -131,18 +131,18 @@ const RoomSidebar: React.FC<Props> = ({
             <button key={key}
               onClick={() => { setTab(key); if (key === 'chat') setUnreadCount(0); }}
               style={{
-                flex: 1, padding: '7px 6px',
-                background: isActive ? 'rgba(138, 92, 246, 0.2)' : 'transparent',
-                color: isActive ? '#a78bfa' : '#44445a',
-                border: isActive ? '1px solid rgba(138, 92, 246, 0.25)' : '1px solid transparent',
-                cursor: 'pointer', fontWeight: 600, fontSize: '0.75rem',
-                borderRadius: '7px', transition: 'all 0.2s',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
+                flex: 1, padding: '9px 6px',
+                background: isActive ? 'rgba(163, 124, 88, 0.15)' : 'transparent',
+                color: isActive ? '#a37c58' : '#6b635a',
+                border: isActive ? '1px solid rgba(163, 124, 88, 0.3)' : '1px solid transparent',
+                cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem',
+                borderRadius: '8px', transition: 'all 0.2s',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
                 position: 'relative',
                 fontFamily: 'Space Grotesk, sans-serif',
               }}
             >
-              <Icon size={13} />
+              <Icon size={16} />
               {label}
               {badge > 0 && (
                 <span style={{
@@ -171,15 +171,15 @@ const RoomSidebar: React.FC<Props> = ({
 
           {/* Role Requests */}
           {myRole === 'HOST' && incomingRequests.length > 0 && (
-            <div style={{ background: 'rgba(245, 158, 11, 0.06)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '10px', padding: '10px' }}>
-              <p style={{ color: '#f59e0b', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <div style={{ background: 'rgba(217, 119, 6, 0.08)', border: '1px solid rgba(217, 119, 6, 0.2)', borderRadius: '10px', padding: '10px' }}>
+              <p style={{ color: '#d97706', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
                 <Crown size={11} /> Role Requests ({incomingRequests.length})
               </p>
               {incomingRequests.map(req => (
-                <div key={req.requestId} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '8px', padding: '8px 10px', marginBottom: '6px' }}>
+                <div key={req.requestId} style={{ background: '#ffffff', border: '1px solid rgba(217, 119, 6, 0.15)', borderRadius: '8px', padding: '8px 10px', marginBottom: '6px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span style={{ color: '#f0f0ff', fontSize: '0.82rem', fontWeight: 600 }}>{req.fromUsername}</span>
-                    <span style={{ fontSize: '0.68rem', color: ROLE_COLOR[req.requestedRole] || '#a78bfa', fontWeight: 700 }}>→ {req.requestedRole}</span>
+                    <span style={{ color: '#2a2520', fontSize: '0.85rem', fontWeight: 700 }}>{req.fromUsername}</span>
+                    <span style={{ fontSize: '0.7rem', color: ROLE_COLOR[req.requestedRole] || '#7c3aed', fontWeight: 700 }}>→ {req.requestedRole}</span>
                   </div>
                   <div style={{ display: 'flex', gap: '6px' }}>
                     <button onClick={() => onRespondRoleRequest(req.requestId, true)}
@@ -198,8 +198,8 @@ const RoomSidebar: React.FC<Props> = ({
 
           {/* Request Upgrade */}
           {canRequestUpgrade && (
-            <div style={{ background: 'rgba(138, 92, 246, 0.06)', border: '1px solid rgba(138, 92, 246, 0.2)', borderRadius: '10px', padding: '10px' }}>
-              <p style={{ color: '#8888aa', fontSize: '0.72rem', fontWeight: 600, margin: '0 0 8px' }}>Request Role Upgrade</p>
+            <div style={{ background: 'rgba(163, 124, 88, 0.08)', border: '1px solid rgba(163, 124, 88, 0.2)', borderRadius: '10px', padding: '10px' }}>
+              <p style={{ color: '#6b635a', fontSize: '0.75rem', fontWeight: 700, margin: '0 0 8px' }}>Request Role Upgrade</p>
               <div style={{ display: 'flex', gap: '6px' }}>
                 {myRole === 'VIEWER' && (
                   <button onClick={() => onRequestRoleUpgrade('PARTICIPANT')}
@@ -225,52 +225,52 @@ const RoomSidebar: React.FC<Props> = ({
           )}
 
           {/* Stats */}
-          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', padding: '10px', fontSize: '0.78rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '7px', marginBottom: '7px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-              <span style={{ color: '#8888aa', display: 'flex', alignItems: 'center', gap: '5px' }}><Crown size={11} color="#f59e0b" /> Host</span>
-              <span style={{ color: '#f59e0b', fontWeight: 700 }}>{hostUser?.username ?? 'N/A'}</span>
+          <div style={{ background: 'rgba(163, 124, 88, 0.05)', border: '1px solid rgba(163, 124, 88, 0.15)', borderRadius: '10px', padding: '10px', fontSize: '0.78rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '7px', marginBottom: '7px', borderBottom: '1px solid rgba(163, 124, 88, 0.15)' }}>
+              <span style={{ color: '#6b635a', display: 'flex', alignItems: 'center', gap: '5px' }}><Crown size={11} color="#d97706" /> Host</span>
+              <span style={{ color: '#d97706', fontWeight: 700 }}>{hostUser?.username ?? 'N/A'}</span>
             </div>
             {[
-              { label: 'Total',        count: participants.length,                                      color: '#f0f0ff' },
-              { label: 'Moderators',   count: participants.filter(p => p.role === 'MODERATOR').length,  color: '#a78bfa' },
-              { label: 'Participants', count: participants.filter(p => p.role === 'PARTICIPANT').length, color: '#38bdf8' },
-              { label: 'Viewers',      count: participants.filter(p => p.role === 'VIEWER').length,     color: '#44445a' },
+              { label: 'Total',        count: participants.length,                                      color: '#2a2520' },
+              { label: 'Moderators',   count: participants.filter(p => p.role === 'MODERATOR').length,  color: '#7c3aed' },
+              { label: 'Participants', count: participants.filter(p => p.role === 'PARTICIPANT').length, color: '#0284c7' },
+              { label: 'Viewers',      count: participants.filter(p => p.role === 'VIEWER').length,     color: '#6b7280' },
             ].map(({ label, count, color }) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                <span style={{ color: '#8888aa' }}>{label}</span>
-                <strong style={{ color }}>{count}</strong>
+                <span style={{ color: '#6b635a', fontWeight: 500 }}>{label}</span>
+                <strong style={{ color, fontWeight: 800 }}>{count}</strong>
               </div>
             ))}
           </div>
 
           {/* Participants List */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {participants.map(user => (
               <div key={user.userId} style={{
-                background: user.userId === myUserId ? 'rgba(138, 92, 246, 0.06)' : 'rgba(255,255,255,0.02)',
-                border: user.userId === myUserId ? '1px solid rgba(138, 92, 246, 0.2)' : '1px solid rgba(255,255,255,0.05)',
-                borderRadius: '10px', padding: '10px',
+                background: user.userId === myUserId ? 'rgba(163, 124, 88, 0.08)' : '#ffffff',
+                border: user.userId === myUserId ? '1px solid rgba(163, 124, 88, 0.25)' : '1px solid rgba(163, 124, 88, 0.15)',
+                borderRadius: '10px', padding: '10px', boxShadow: user.userId === myUserId ? 'none' : '0 1px 3px rgba(0,0,0,0.02)'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div style={{
-                      width: '26px', height: '26px', borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #8a5cf6, #f059da)',
+                      width: '28px', height: '28px', borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #a37c58, #c6a282)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '0.7rem', fontWeight: 700, color: 'white', flexShrink: 0,
+                      fontSize: '0.8rem', fontWeight: 700, color: 'white', flexShrink: 0,
                     }}>
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <span style={{ color: '#f0f0ff', fontWeight: 600, fontSize: '0.82rem' }}>
+                      <span style={{ color: '#2a2520', fontWeight: 700, fontSize: '0.85rem' }}>
                         {user.username}
-                        {user.userId === myUserId && <span style={{ color: '#44445a', fontSize: '0.68rem', marginLeft: '4px' }}>(you)</span>}
+                        {user.userId === myUserId && <span style={{ color: '#6b635a', fontSize: '0.7rem', marginLeft: '6px' }}>(you)</span>}
                       </span>
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(255,255,255,0.04)', padding: '3px 8px', borderRadius: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(163, 124, 88, 0.08)', padding: '3px 8px', borderRadius: '6px' }}>
                     <RoleIcon role={user.role} size={10} />
-                    <span style={{ fontSize: '0.65rem', color: ROLE_COLOR[user.role], fontWeight: 700 }}>{user.role}</span>
+                    <span style={{ fontSize: '0.65rem', color: ROLE_COLOR[user.role], fontWeight: 800 }}>{user.role}</span>
                   </div>
                 </div>
 
@@ -316,24 +316,24 @@ const RoomSidebar: React.FC<Props> = ({
             style={{ display: 'flex', gap: '6px' }}>
             <input type="text" placeholder="Search YouTube..." value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ flex: 1, padding: '8px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.05)', color: '#f0f0ff', fontSize: '0.82rem', outline: 'none', fontFamily: 'Space Grotesk, sans-serif' }} />
+              style={{ flex: 1, padding: '9px 12px', borderRadius: '8px', border: '1px solid rgba(163, 124, 88, 0.2)', background: '#ffffff', color: '#2a2520', fontSize: '0.88rem', outline: 'none', fontFamily: 'Space Grotesk, sans-serif' }} />
             <button type="submit" disabled={isSearching}
-              style={{ background: 'rgba(138, 92, 246, 0.2)', color: '#a78bfa', border: '1px solid rgba(138, 92, 246, 0.25)', borderRadius: '8px', padding: '8px 12px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-              {isSearching ? <Loader2 size={14} /> : <Search size={14} />}
+              style={{ background: 'rgba(163, 124, 88, 0.15)', color: '#a37c58', border: '1px solid rgba(163, 124, 88, 0.25)', borderRadius: '8px', padding: '9px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+              {isSearching ? <Loader2 size={16} /> : <Search size={16} />}
             </button>
           </form>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {searchResults.map((item) => (
               <div key={item.id.videoId} onClick={() => onSearchVideo?.(item.id.videoId)}
-                style={{ display: 'flex', gap: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', border: '1px solid rgba(255,255,255,0.05)', transition: 'border-color 0.2s' }}
-                onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(138, 92, 246, 0.3)'}
-                onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'}
+                style={{ display: 'flex', gap: '8px', background: '#ffffff', borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', border: '1px solid rgba(163, 124, 88, 0.15)', transition: 'border-color 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(163, 124, 88, 0.35)'}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(163, 124, 88, 0.15)'}
               >
                 <img src={item.snippet.thumbnails.default.url} alt="" style={{ width: '88px', height: '58px', objectFit: 'cover', flexShrink: 0 }} />
                 <div style={{ padding: '6px 6px 6px 0', flex: 1, overflow: 'hidden' }}>
-                  <p style={{ margin: 0, fontSize: '0.76rem', color: '#f0f0ff', fontWeight: 600, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.4 }}>{item.snippet.title}</p>
-                  <p style={{ margin: '3px 0 0', fontSize: '0.68rem', color: '#44445a', fontWeight: 500 }}>{item.snippet.channelTitle}</p>
+                  <p style={{ margin: 0, fontSize: '0.8rem', color: '#2a2520', fontWeight: 600, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.4 }}>{item.snippet.title}</p>
+                  <p style={{ margin: '3px 0 0', fontSize: '0.7rem', color: '#6b635a', fontWeight: 500 }}>{item.snippet.channelTitle}</p>
                 </div>
               </div>
             ))}

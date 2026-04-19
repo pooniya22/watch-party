@@ -62,21 +62,21 @@ const RoomChat: React.FC<Props> = ({ socket, roomId, username, myUserId, myRole,
       display: 'flex', flexDirection: 'column', height: '100%',
       background: 'var(--bg-surface)',
       borderRadius: '12px',
-      border: '1px solid rgba(255,255,255,0.06)',
+      border: '1px solid rgba(163, 124, 88, 0.15)',
       overflow: 'hidden',
     }}>
 
       {/* Header */}
       <div style={{
-        padding: '10px 14px',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        padding: '12px 14px',
+        borderBottom: '1px solid rgba(163, 124, 88, 0.15)',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-          <MessageSquare size={14} color="#8a5cf6" />
-          <span style={{ color: '#f0f0ff', fontWeight: 700, fontSize: '0.82rem', letterSpacing: '0.02em' }}>Live Chat</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <MessageSquare size={16} color="#a37c58" />
+          <span style={{ color: '#2a2520', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '0.02em' }}>Live Chat</span>
         </div>
-        <span style={{ fontSize: '0.7rem', color: '#44445a', fontWeight: 500 }}>{messages.length} msgs</span>
+        <span style={{ fontSize: '0.75rem', color: '#6b635a', fontWeight: 600 }}>{messages.length} msgs</span>
       </div>
 
       {/* Error */}
@@ -98,47 +98,48 @@ const RoomChat: React.FC<Props> = ({ socket, roomId, username, myUserId, myRole,
       }}>
         {messages.length === 0 && (
           <div style={{ margin: 'auto', textAlign: 'center' }}>
-            <MessageSquare size={28} color="#44445a" style={{ marginBottom: '8px' }} />
-            <p style={{ color: '#44445a', fontSize: '0.8rem', margin: 0 }}>No messages yet. Say hi!</p>
+            <MessageSquare size={32} color="#cdc6bd" style={{ marginBottom: '8px' }} />
+            <p style={{ color: '#8c8276', fontSize: '0.85rem', margin: 0, fontWeight: 500 }}>No messages yet. Say hi!</p>
           </div>
         )}
         {messages.map((msg, i) => {
           const isMe = msg.userId === myUserId || msg.username === username;
           return (
             <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: isMe ? 'flex-end' : 'flex-start' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '3px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
                 {!isMe && (
                   <div style={{
-                    width: '18px', height: '18px', borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #8a5cf6, #f059da)',
+                    width: '20px', height: '20px', borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #a37c58, #c6a282)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '0.6rem', fontWeight: 700, color: 'white', flexShrink: 0,
+                    fontSize: '0.65rem', fontWeight: 700, color: 'white', flexShrink: 0,
                   }}>
                     {msg.username.charAt(0).toUpperCase()}
                   </div>
                 )}
-                <span style={{ fontSize: '0.68rem', color: '#8888aa', fontWeight: 600 }}>{isMe ? 'You' : msg.username}</span>
+                <span style={{ fontSize: '0.72rem', color: '#6b635a', fontWeight: 600 }}>{isMe ? 'You' : msg.username}</span>
                 {msg.role && (
                   <span style={{
-                    fontSize: '0.58rem', color: ROLE_BADGE_COLOR[msg.role] || '#44445a',
+                    fontSize: '0.62rem', color: ROLE_BADGE_COLOR[msg.role] || '#8c8276',
                     fontWeight: 700, letterSpacing: '0.04em',
-                    background: 'rgba(255,255,255,0.04)',
-                    padding: '1px 5px', borderRadius: '4px',
+                    background: 'rgba(163, 124, 88, 0.08)',
+                    padding: '2px 6px', borderRadius: '4px',
                   }}>
                     {msg.role}
                   </span>
                 )}
               </div>
               <div style={{
-                background: isMe ? 'rgba(138, 92, 246, 0.25)' : 'rgba(255,255,255,0.05)',
-                border: isMe ? '1px solid rgba(138, 92, 246, 0.3)' : '1px solid rgba(255,255,255,0.06)',
-                color: '#f0f0ff',
-                padding: '7px 11px',
+                background: isMe ? 'rgba(163, 124, 88, 0.15)' : '#ffffff',
+                border: isMe ? '1px solid rgba(163, 124, 88, 0.25)' : '1px solid rgba(163, 124, 88, 0.15)',
+                color: '#2a2520',
+                padding: '8px 12px',
                 borderRadius: isMe ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
                 maxWidth: '85%',
-                fontSize: '0.83rem',
+                fontSize: '0.88rem',
                 wordBreak: 'break-word',
                 lineHeight: '1.5',
+                boxShadow: isMe ? 'none' : '0 1px 3px rgba(0,0,0,0.02)',
               }}>
                 {msg.text}
               </div>
@@ -150,8 +151,8 @@ const RoomChat: React.FC<Props> = ({ socket, roomId, username, myUserId, myRole,
 
       {/* Emoji Picker */}
       {showEmoji && !isViewer && (
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <EmojiPicker onEmojiClick={(e) => setInput(p => p + e.emoji)} theme={"dark" as any} width="100%" height={400} />
+        <div style={{ borderTop: '1px solid rgba(163, 124, 88, 0.15)' }}>
+          <EmojiPicker onEmojiClick={(e) => setInput(p => p + e.emoji)} theme={"light" as any} width="100%" height={400} />
         </div>
       )}
 
@@ -166,20 +167,21 @@ const RoomChat: React.FC<Props> = ({ socket, roomId, username, myUserId, myRole,
         </div>
       ) : (
         <div style={{
-          display: 'flex', gap: '6px', padding: '8px 10px',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-          alignItems: 'center',
+          display: 'flex', gap: '8px', padding: '10px 12px',
+          borderTop: '1px solid rgba(163, 124, 88, 0.15)',
+          alignItems: 'center', backgroundColor: '#ffffff',
+          borderBottomLeftRadius: '12px', borderBottomRightRadius: '12px',
         }}>
           <button
             onClick={() => setShowEmoji(p => !p)}
             style={{
-              background: showEmoji ? 'rgba(20, 8, 49, 0.15)' : 'none',
-              border: 'none', cursor: 'pointer', padding: '6px',
-              borderRadius: '6px', display: 'flex', alignItems: 'center',
+              background: showEmoji ? 'rgba(163, 124, 88, 0.1)' : 'transparent',
+              border: 'none', cursor: 'pointer', padding: '8px',
+              borderRadius: '8px', display: 'flex', alignItems: 'center',
               transition: 'background 0.2s',
             }}
           >
-            <Smile size={16} color={showEmoji ? '#8a5cf6' : '#44445a'} />
+            <Smile size={18} color={showEmoji ? '#a37c58' : '#8c8276'} />
           </button>
           <input
             value={input}
@@ -189,12 +191,12 @@ const RoomChat: React.FC<Props> = ({ socket, roomId, username, myUserId, myRole,
             maxLength={500}
             style={{
               flex: 1,
-              background: 'rgba(255,255,255,0.05)',
-              color: '#f0f0ff',
-              border: '1px solid rgba(255,255,255,0.08)',
+              background: '#fcfcfc',
+              color: '#2a2520',
+              border: '1px solid rgba(163, 124, 88, 0.2)',
               borderRadius: '8px',
-              padding: '7px 12px',
-              fontSize: '0.83rem',
+              padding: '9px 12px',
+              fontSize: '0.9rem',
               outline: 'none',
               fontFamily: 'Space Grotesk, sans-serif',
             }}
@@ -202,17 +204,17 @@ const RoomChat: React.FC<Props> = ({ socket, roomId, username, myUserId, myRole,
           <button
             onClick={sendMessage}
             style={{
-              background: 'rgba(138, 92, 246, 0.2)',
-              border: '1px solid rgba(138, 92, 246, 0.3)',
-              color: '#a78bfa',
+              background: 'rgba(163, 124, 88, 0.15)',
+              border: '1px solid rgba(163, 124, 88, 0.25)',
+              color: '#a37c58',
               borderRadius: '8px',
-              padding: '7px 10px',
+              padding: '9px 12px',
               cursor: 'pointer',
               display: 'flex', alignItems: 'center',
               transition: 'all 0.2s',
             }}
           >
-            <Send size={14} />
+            <Send size={16} />
           </button>
         </div>
       )}

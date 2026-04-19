@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { RefreshCw } from 'lucide-react';
 
 interface CreateRoomProps {
   onBack:   () => void;
@@ -72,8 +73,8 @@ const CreateRoomView: React.FC<CreateRoomProps> = ({ onBack, onCreate }) => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label style={{ color: '#cbd5e1', marginBottom: '8px', display: 'block' }}>
-              Room Name
+            <label style={{ color: '#6b635a', marginBottom: '8px', display: 'block', fontSize: '0.9rem', fontWeight: 600 }}>
+              Room Code
             </label>
             <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
   <input
@@ -85,28 +86,31 @@ const CreateRoomView: React.FC<CreateRoomProps> = ({ onBack, onCreate }) => {
     autoFocus
     style={{
       flex: 1, padding: '12px', borderRadius: '8px',
-      border: '1px solid #334155', backgroundColor: '#0f172a',
-      color: 'white', fontWeight: '700', letterSpacing: '0.08em',
+      border: '1px solid rgba(163, 124, 88, 0.3)', backgroundColor: '#ffffff',
+      color: '#2a2520', fontWeight: '700', letterSpacing: '0.08em',
+      outline: 'none', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.02)'
     }}
   />
   <button
     type="button"
     onClick={() => setRoomName(generateRoomId())}
     style={{
-      padding: '12px 14px', borderRadius: '8px',
-      background: 'transparent', border: '1px solid #334155',
-      color: '#94a3b8', cursor: 'pointer', fontSize: '1.1rem',
-      transition: 'all 0.2s',
+      padding: '0 16px', borderRadius: '8px',
+      background: 'rgba(163, 124, 88, 0.05)', border: '1px solid rgba(163, 124, 88, 0.2)',
+      color: '#a37c58', cursor: 'pointer', display: 'flex', alignItems: 'center',
+      justifyContent: 'center', transition: 'all 0.2s ease',
     }}
-    title="Generate new room ID"
+    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(163, 124, 88, 0.1)'; e.currentTarget.style.color = '#8a6543'; }}
+    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(163, 124, 88, 0.05)'; e.currentTarget.style.color = '#a37c58'; }}
+    title="Generate new room code"
   >
-    🔀
+    <RefreshCw size={18} />
   </button>
 </div>
           </div>
 
           <div className="form-group">
-            <label style={{ color: '#cbd5e1', marginBottom: '8px', display: 'block' }}>
+            <label style={{ color: '#6b635a', marginBottom: '8px', display: 'block', fontSize: '0.9rem', fontWeight: 600 }}>
               Max Participants
             </label>
             <input
@@ -117,8 +121,9 @@ const CreateRoomView: React.FC<CreateRoomProps> = ({ onBack, onCreate }) => {
               onChange={(e) => setParticipants(parseInt(e.target.value))}
               style={{
                 width: '100%', padding: '12px', borderRadius: '8px',
-                border: '1px solid #334155', backgroundColor: '#0f172a',
-                color: 'white', marginBottom: '16px',
+                border: '1px solid rgba(163, 124, 88, 0.3)', backgroundColor: '#ffffff',
+                color: '#2a2520', marginBottom: '24px', fontWeight: '500',
+                outline: 'none', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.02)'
               }}
             />
           </div>
@@ -129,23 +134,37 @@ const CreateRoomView: React.FC<CreateRoomProps> = ({ onBack, onCreate }) => {
             </p>
           )}
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '12px' }}>
             <button
               type="button"
               onClick={onBack}
-              className="btn-join"
-              style={{ flex: 1 }}
+              style={{ 
+                flex: 1, padding: '12px', borderRadius: '100px', cursor: 'pointer',
+                background: 'transparent', border: '1px solid rgba(163, 124, 88, 0.3)',
+                color: '#6b635a', fontWeight: '600', fontSize: '0.95rem',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(163, 124, 88, 0.05)'; e.currentTarget.style.color = '#2a2520'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#6b635a'; }}
               disabled={loading}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="btn-create"
-              style={{ flex: 1, opacity: loading ? 0.5 : 1 }}
+              style={{ 
+                flex: 1, opacity: loading || !roomName.trim() ? 0.6 : 1, padding: '12px', 
+                borderRadius: '100px', cursor: loading || !roomName.trim() ? 'not-allowed' : 'pointer',
+                background: '#a37c58', border: 'none',
+                color: 'white', fontWeight: '600', fontSize: '0.95rem',
+                boxShadow: '0 4px 12px rgba(163, 124, 88, 0.2)',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => { if(!loading && roomName.trim()) e.currentTarget.style.background = '#8a6543'; }}
+              onMouseLeave={(e) => { if(!loading && roomName.trim()) e.currentTarget.style.background = '#a37c58'; }}
               disabled={loading || !roomName.trim()}
             >
-              {loading ? 'Creating...' : 'Initialize Room'}
+              {loading ? 'Creating...' : 'Create Room'}
             </button>
           </div>
         </form>
